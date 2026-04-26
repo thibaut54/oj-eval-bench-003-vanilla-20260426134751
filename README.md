@@ -1,433 +1,306 @@
-# ProjDevBench
+# ICPC Management System
 
-[English](README.md) | [中文](README_zh.md) | [Homepage](https://zsworld6.github.io/projdevbenchpage/) | [Paper](https://arxiv.org/abs/2602.01655)
+**ACMOJ Problem ID**: 1986
 
-**ProjDevBench** (Project Development Benchmark) is a benchmark platform for evaluating AI coding agents on end-to-end project development tasks. Unlike existing benchmarks that focus on issue-level bug fixing, ProjDevBench evaluates agents on their ability to construct complete, executable software repositories from high-level specifications.
+## Table of Contents
 
-<p align="center">
-  <img src="assets/tasks.png" alt="Task Comparison" width="600">
-</p>
+- [ICPC Management System](#icpc-management-system)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+    - [Background](#background)
+  - [Assignment Description](#assignment-description)
+    - [Grade Composition](#grade-composition)
+  - [Assignment Requirements](#assignment-requirements)
+    - [Terminology](#terminology)
+    - [Command Descriptions](#command-descriptions)
+    - [Input Format](#input-format)
+    - [Output Format](#output-format)
+    - [Data Constraints](#data-constraints)
+  - [Per-Testcase Resource Limits](#per-testcase-resource-limits)
+  - [Submission Requirements](#submission-requirements)
+    - [OJ Git Repository Compilation Process](#oj-git-repository-compilation-process)
+    - [Git Configuration Requirements](#git-configuration-requirements)
+    - [Submission Guidelines](#submission-guidelines)
+    - [Evaluation Notes](#evaluation-notes)
+    - [Academic Integrity](#academic-integrity)
 
-<p align="center">
-  <em>Task comparison: ProjDevBench evaluates end-to-end repository construction from project-level requirements, unlike benchmarks that modify pre-existing codebases.</em>
-</p>
+## Introduction
 
-## Key Features
+### Background
 
-- **End-to-End Project Construction**: Agents build complete repositories from scratch, not just patches or single files
-- **Multi-Agent Support**: Evaluate Claude Code, Cursor, Gemini CLI, Codex, Augment, and GitHub Copilot
-- **Dual Evaluation Protocol**: Combines Online Judge (OJ) execution-based testing with LLM-assisted code review
-- **Diagnostic Feedback**: Fine-grained verdict-level signals (Wrong Answer, TLE, MLE, Runtime Error, etc.)
-- **Containerized Execution**: Docker-based isolated environments ensure reproducible results
-- **Git Integration**: Each evaluation creates a GitHub repository tracking the agent's complete problem-solving process
+**ICPC** (International Collegiate Programming Contest) is an annual competition organized by the ICPC Foundation, designed to showcase university students' innovation capabilities, teamwork, and their ability to write programs, analyze and solve problems under pressure. It is the most influential computer science competition for university students. In ICPC competitions, each team attempts to solve the maximum number of problems with the minimum number of incorrect submissions. The winner is the team that correctly solves the most problems with the least total penalty time.
 
-<p align="center">
-  <img src="assets/benchmark_pipeline.png" alt="Benchmark Pipeline" width="800">
-</p>
+## Assignment Description
 
-<p align="center">
-  <em>Overview of the ProjDevBench evaluation pipeline.</em>
-</p>
+### Grade Composition
 
-## Benchmark Statistics
+| Grading Component | Percentage |
+| :--: | :--: |
+| Pass **1986. ICPC Management System (2024 A)** | 80% |
+| Code Review | 20% |
 
-| Metric | Value |
-|--------|-------|
-| Total Problems | 20 |
-| Categories | 8 |
-| Avg. Interaction Turns | 138 |
-| Avg. Tokens per Problem | 4.81M |
-| Overall Acceptance Rate | 27.38% |
+Here are several points that need clarification:
 
-## Problem Categories
+- In the Code Review, we will **strictly examine your code style and repository organization structure, etc.**. 
 
-<p align="center">
-  <img src="assets/category_pie_chart.png" alt="Category Distribution" width="400">
-</p>
+- This assignment provides some sample data for testing, stored in the `/workspace/data/003/data_test/` directory. Note that these are not the test cases on the Online Judge. Passing all local test cases does not guarantee that you will pass the OJ tests.
 
-| Category | Count | Key Challenges |
-|----------|-------|----------------|
-| Data Structures | 7 | Template programming, iterators, memory management |
-| Management Systems | 3 | Business logic, complex queries, file I/O |
-| Interpreters | 3 | Parsing, closures, evaluation |
-| Storage Systems | 2 | B+ tree, disk-based operations |
-| Algorithm | 2 | Precision, codecs |
-| Assembly | 1 | Low-level computation |
-| Game/Simulation | 1 | State machines |
-| Optimization | 2 | Memory management, GPU simulation |
+- Besides the provided sample data, we also encourage you to design your own test data based on your program logic to assist debugging.
 
-## Problem Details
+## Assignment Requirements
 
-| ID | Problem Name | Category | Difficulty | Time Limit | Memory Limit | Avg Score |
-|----|--------------|----------|------------|------------|--------------|-----------|
-| 001 | A+B Problem | Algorithm | Easy | 1s | 256 MiB | 54.37 |
-| 002 | int2048 Big Integer | Algorithm | Easy | 10s | 190 MiB | 48.19 |
-| 003 | ICPC Management System | Management | Hard | 2s | 512 MiB | 52.07 |
-| 004 | Bookstore System | Management | Hard | 10s | 64 MiB | 36.29 |
-| 005 | QOI Format Codec | Algorithm | Easy | 10s | 512 MiB | 58.87 |
-| 006 | Minesweeper | Game | Easy | 30s | 256 MiB | 53.51 |
-| 007 | BASIC Interpreter | Interpreter | Easy | 5s | 256 MiB | 47.67 |
-| 008 | MOV Language | Assembly | Easy | - | - | 54.70 |
-| 009 | STLite Vector | Data Structure | Easy | 100s | 768 MiB | 58.46 |
-| 010 | STLite List | Data Structure | Easy | 25s | 768 MiB | 30.76 |
-| 011 | STLite Priority Queue | Data Structure | Easy | 15s | 512 MiB | 57.25 |
-| 012 | STLite Linked HashMap | Data Structure | Easy | 24s | 893 MiB | 43.36 |
-| 013 | STLite Map | Data Structure | Easy | 30s | 893 MiB | 58.21 |
-| 014 | Python Interpreter | Interpreter | Easy | 16s | 512 MiB | 46.23 |
-| 015 | File Storage | Storage | Hard | 16s | 6 MiB | 42.71 |
-| 016 | File Storage BPT | Storage | Hard | 5s | 64 MiB | 40.11 |
-| 017 | Train Ticket System | Management | Hard | 40s | 47 MiB | 53.24 |
-| 018 | Scheme Interpreter | Interpreter | Easy | 1.5s | 244 MiB | 32.94 |
-| 019 | GPU Memory Optimization | Optimization | Easy | 1s | 244 MiB | 36.89 |
-| 020 | Buddy Algorithm | Optimization | Easy | 10s | 244 MiB | 33.33 |
+### Terminology
 
-> **Difficulty Definition**: 
-> - **Easy (E)**: Project-completion setting with partial codebase provided
-> - **Hard (H)**: Project-creation setting requiring from-scratch construction
+Since this assignment involves many specialized terms, to better understand the command descriptions below, we will first explain the terminology used in the assignment.
 
-## Project Structure
+- **Competition Time**: We use `duration_time` to represent the duration of the competition. The competition time range is the closed interval `[1, duration_time]`. Therefore, we can use an integer in this interval to represent a specific time point during the competition. We only guarantee that submission times in the input data are **monotonically non-decreasing**, which means **identical** times may occur.
 
+- **Team**: Each participating team has its own unique team name. Team names consist of combinations of uppercase and lowercase letters, numbers, and underscores, with a maximum length of 20 characters (inclusive).
+
+- **Submission**: A team submits a solution which, after being evaluated by the judge system, provides the backend with basic information about this submission. Submissions before the freeze will update the team's status in real-time (such as the number of solved problems), but **will not update the team's ranking on the scoreboard**.
+
+- **Judge Status**: Each submission has a corresponding judge status, which may include:
+
+  - Accepted
+  - Wrong_Answer
+  - Runtime_Error
+  - Time_Limit_Exceed
+
+  Only Accepted counts as passing; the remaining statuses do not count as passing.
+
+- **Flush Scoreboard**: Update the team rankings on the scoreboard.
+
+- **Scoreboard**: Displays the status of each team in order from highest to lowest ranking.
+
+- **Penalty Time**: A parameter used to compare team rankings. A team's penalty time for a particular problem is defined as $P = 20X + T$, where $X$ is the number of submissions before the first correct submission, and $T$ is the time when the team solved this problem (i.e., the time of the first correct submission). A team's penalty time is defined as the sum of penalty times for all **solved problems**.
+
+- **Ranking**: Competition rankings are determined by multiple parameters:
+  - First, teams with more solved problems rank higher;
+  - When two teams have solved the same number of problems, we compare their penalty times; the team with less penalty time ranks higher;
+  - If still tied, we compare the maximum solve time among solved problems for both teams; the team with the smaller maximum solve time ranks higher. If equal, compare the second largest solve time, then the third largest, and so on;
+  - If still tied, compare team names lexicographically; the team with the smaller lexicographic order ranks higher (since team names are unique, one must be lexicographically smaller than the other).
+  - **Note**: All of the above factors **do not include frozen problems** (see next item for frozen status). Obviously, after freezing and before scrolling, the rankings on the scoreboard will not change.
+  - Before the first scoreboard flush, rankings are based on the lexicographic order of team names.
+
+- **Freeze**: After freezing, for any team, all **problems unsolved by that team before the freeze**, the real-time submission results are not displayed on the scoreboard after freezing. Instead, only the number of submissions to the problem during the freeze period is shown. Problems with at least one submission after freezing will enter a **frozen state** (problems solved before freezing will not be frozen even if submitted again after freezing).
+
+- **Scroll**: During the scrolling session, each time we select the lowest-ranked team on the scoreboard that has frozen problems, and select the problem with the smallest number among that team's frozen problems to unfreeze. We then recalculate rankings and update the ranking status on the scoreboard (the scroll operation first flushes the scoreboard before proceeding). Then, on the updated scoreboard, we again select the lowest-ranked team with frozen problems and repeat the unfreezing operation until no team has any frozen problems remaining. This way, we obtain the current correct scoreboard.
+  - **Note**: Unlike actual competitions, in this assignment, multiple freezes and scrolls can occur within a single competition. Each scroll must be executed while in a frozen state; after scrolling ends, the frozen state will be lifted, and freezing can be done again afterward.
+
+### Command Descriptions
+
+All command formats are provided in the code blocks below. The all-uppercase parts represent commands, and the lowercase parts within square brackets `[]` represent corresponding parameters (the brackets will not appear in the input).
+
+```plain
+# Add team
+ADDTEAM [team_name]
+
+# Start competition
+START DURATION [duration_time] PROBLEM [problem_count]
+
+# Submit problem
+SUBMIT [problem_name] BY [team_name] WITH [submit_status] AT [time]
+
+# Flush scoreboard
+FLUSH
+
+# Freeze scoreboard
+FREEZE
+
+# Scroll scoreboard
+SCROLL
+
+# Query team ranking
+QUERY_RANKING [team_name]
+
+# Query team submission
+QUERY_SUBMISSION [team_name] WHERE PROBLEM=[problem_name] AND STATUS=[status]
+
+# End competition
+END
 ```
-projdevbench/
-├── config/                    # Configuration files
-│   ├── environment.env        # Environment variable template
-│   ├── problem_registry.json  # Problem definitions
-│   └── agent_model_config.json
-├── docker/                    # Docker configurations
-│   ├── base/                  # Base image with CLI tools
-│   └── agent-runner/          # Runtime image
-├── scripts/                   # Execution scripts
-│   ├── container/             # In-container agent scripts
-│   ├── analyze/               # Result analysis tools
-│   ├── cr/                    # Code review scripts
-│   └── run_evaluation.sh      # Main evaluation script
-├── problem/                   # Problem definitions
-│   └── [problem_id]/          # Each problem folder
-│       ├── README.md          # Problem description
-│       └── submit_acmoj/      # OJ submission client
-└── data/                      # Test data
-```
 
-## Quick Start
+- Add team
+  - `ADDTEAM [team_name]`
+  - Add a team to the system.
+    - If successfully added, output `[Info]Add successfully.\n`
+    - If the competition has started, output `[Error]Add failed: competition has started.\n`
+    - If the competition hasn't started but the team name is duplicated, output `[Error]Add failed: duplicated team name.\n`
 
-### Prerequisites
+- Start competition
+  - `START DURATION [duration_time] PROBLEM [problem_count]`
+  - Start the competition. The competition time range is the closed interval `[1, duration_time]`, and problem IDs range over the first `problem_count` uppercase English letters.
+    - If successfully started, output `[Info]Competition starts.\n`
+    - If the competition has already started, output `[Error]Start failed: competition has started.\n`
 
-- Docker Desktop or Docker Engine
-- Git
-- jq (JSON parser)
-- Python 3.8+
-- GitHub account with Personal Access Token (recommend creating a dedicated account for experiments)
-- [ACMOJ](https://acm.sjtu.edu.cn/OnlineJudge) account with API Token (register with student ID `123456123456`)
+**All subsequent operations are guaranteed to occur after the competition has started.**
 
-### GitHub Token Requirements
+- Submit problem
+  - `SUBMIT [problem_name] BY [team_name] WITH [submit_status] AT [time]`
+  - The input is guaranteed to be valid. Record a submission by `team_name` at time `time` for problem `problem_name` with judge status `submit_status`.
+    - `submit_status` may include: Accepted, Wrong_Answer, Runtime_Error, Time_Limit_Exceed. Only Accepted counts as passing; the remaining statuses do not count as passing. Times are guaranteed to increase monotonically (non-strictly) in the order submissions appear.
+    - This command has no output.
 
-The evaluation system needs to create repositories and push code on behalf of the agent. Your GitHub Fine-grained Personal Access Token **must** have the following permissions:
+- Flush scoreboard
+  - `FLUSH`
+  - Flush the current scoreboard.
+    - Output `[Info]Flush scoreboard.\n`
 
-Create at: https://github.com/settings/personal-access-tokens/new
+- Freeze scoreboard
+  - `FREEZE`
+  - Perform the freeze operation.
+    - If successful, output `[Info]Freeze scoreboard.\n`
+    - If already frozen but not yet scrolled, output `[Error]Freeze failed: scoreboard has been frozen.\n`
 
-**Required permissions:**
+- Scroll scoreboard
+  - `SCROLL`
+    - If not frozen, output `[Error]Scroll failed: scoreboard has not been frozen.`
+    - If frozen, scrolling can begin:
+      - First output the prompt `[Info]Scroll scoreboard.\n`
+      - Then output the scoreboard **before scrolling** (this scoreboard is **after flushing**)
+      - Next, output each unfreeze that **causes a ranking change** during scrolling, one per line
+      - Finally, output the scoreboard **after scrolling**
+    - The output format for ranking changes is as follows:
 
-| Permission | Access Level | Purpose |
-|------------|--------------|---------|
-| **Administration** | Read and write | Create new repositories |
-| **Contents** | Read and write | Push code to repositories |
+      ```plain
+      [team_name1] [team_name2] [solved_number] [penalty_time]
+      ```
 
-> **Note:** If you encounter errors like `Resource not accessible by personal access token (createRepository)` or `Permission denied` when pushing, your token lacks the required permissions. Please verify and update your token.
+      `team_name1` represents the team whose ranking increased due to problem unfreezing, `team_name2` represents the team whose ranking was replaced by `team_name1` (i.e., the team that was at the position before `team_name1`'s ranking increase), `solved_number` and `penalty_time` are `team_name1`'s new number of solved problems and penalty time.
+    - The scoreboard output format is as follows:
+      Output $N$ lines (where $N$ is the total number of teams), each line in the format:
 
-### Logs Directory Permissions
+      ```plain
+      team_name ranking solved_count total_penalty A B C ...
+      ```
 
-The evaluation runs inside a Docker container with a different user (`agent`). The logs directory is mounted from the host, so you need to create it and ensure proper write permissions:
+      representing a team's status, where "A B C ..." represents the status of each problem, with three possible cases:
 
+      - Problem is not frozen and has been solved:
+        - Display `+x`, where `x` is the number of incorrect attempts before the first successful submission
+        - If `x` is 0, display `+` instead of `+0`
+      - Problem is not frozen but not solved:
+        - Display `-x`, where `x` is the number of incorrect attempts
+        - If `x` is 0 (i.e., the team hasn't submitted this problem yet), display `.` instead of `-0`
+      - Problem is frozen:
+        - Display `-x/y`, where `x` is the number of incorrect attempts before freezing, and `y` is the number of submissions after freezing
+        - If `x` is 0, display `0/y` instead of `-0/y`
+
+- Query team ranking
+  - `QUERY_RANKING [team_name]`
+    - Query the ranking of the corresponding team.
+    - If the team doesn't exist, output `[Error]Query ranking failed: cannot find the team.\n`
+    - If the team exists, output `[Info]Complete query ranking.\n`. If in a frozen state, output an additional line `[Warning]Scoreboard is frozen. The ranking may be inaccurate until it were scrolled.\n`. Regardless of freeze status, output the team's ranking after the last scoreboard flush in the following format:
+
+      ```plain
+      [team_name] NOW AT RANKING [ranking]
+      ```
+
+- Query team submission
+  - `QUERY_SUBMISSION [team_name] WHERE PROBLEM=[problem_name] AND STATUS=[status]`
+    - Query the last submission of the corresponding team that satisfies the conditions. **Submissions after freezing can be queried.**
+
+      Here are some valid examples for reference:
+
+      ```plain
+      # Query the last submission by Team_Rocket
+      QUERY_SUBMISSION Team_Rocket WHERE PROBLEM=ALL AND STATUS=ALL
+      
+      # Query the last submission with Accepted status by Team_Plasma
+      QUERY_SUBMISSION Team_Plasma WHERE PROBLEM=ALL AND STATUS=Accepted
+
+      # Query the last submission to problem A by Pokemon_League
+      QUERY_SUBMISSION Pokemon_League WHERE PROBLEM=A AND STATUS=ALL
+
+      # Query the last submission to problem M with Runtime_Error status by Opelucid_Gym
+      QUERY_SUBMISSION Opelucid_Gym WHERE PROBLEM=M AND STATUS=Runtime_Error
+      ```
+
+    - If the team doesn't exist, output `[Error]Query submission failed: cannot find the team.\n`
+    - If the team exists, output `[Info]Complete query submission.\n`
+      - If no submission satisfies the conditions, output `Cannot find any submission.\n`
+      - If there is a submission satisfying the conditions, output one line representing the last submission that satisfies the conditions in the following format:
+
+        ```plain
+        [team_name] [problem_name] [status] [time]
+        ```
+
+        `problem_name` is the problem ID of the submission, `status` is the submission status, and `time` is the submission time. The formats of `problem_name` and `status` in the query are guaranteed to be valid.
+
+- End competition
+  - `END`
+    - End the competition.
+      - Output `[Info]Competition ends.\n`. The scoreboard is guaranteed not to be in a frozen state when the competition ends, and there will be no operations afterward.
+
+### Input Format
+
+- After the program starts running, it will read several commands until the `END` command is read.
+- Command formats are guaranteed to be valid (but the content executed by commands is not guaranteed to be valid; see the text above for details).
+
+### Output Format
+
+Output according to the format required in the Command Descriptions section.
+
+### Data Constraints
+
+For 60% of the data: total number of teams $N \le 500$, number of operations $\mathit{opt}\le 10^4$.
+
+For 100% of the data: total number of teams $N \le 10^4$, total number of problems $M \le 26$, competition duration $T \le 10^5$, number of operations $\mathit{opt}\le 3\times 10^5$, number of flush operations $\mathit{opt_{flush}} \le 1000$, number of freeze operations $\mathit{opt_{freeze}}\le 10$.
+
+## Per-Testcase Resource Limits
+
+- **Time Limit (per test case)**: 2000 ms  
+- **Memory Limit (per test case)**: 512 MiB  
+- **Disk Usage**: Disk access is not permitted.
+
+## Submission Requirements
+
+### OJ Git Repository Compilation Process
+
+For Git compilation, we will first clone the repository using a command similar to:
 ```bash
-# Create and set permissions for the logs directory (run from project root)
-mkdir -p logs
-chmod -R 777 logs/
+git clone <repo_url> . --depth 1 --recurse-submodules --shallow-submodules --no-local
 ```
 
-Or the script will automatically set `chmod 777` on the log directory during evaluation. If you encounter `Permission denied` errors when writing logs, manually run the above commands.
-
-### Installation
-
-1. **Clone the repository**
+Then we check if there is a `CMakeLists.txt` file. If it exists, we run (if not, a warning message will be displayed):
 ```bash
-git clone https://github.com/your-username/projdevbench.git
-cd projdevbench
+cmake .
 ```
 
-2. **Configure environment variables**
+Finally, we check if there is any of `GNUmakefile`/`makefile`/`Makefile` (if cmake was run previously, this will be the generated Makefile). If it exists, we run (if not, a warning message will be displayed):
 ```bash
-vim config/environment.env
+make
 ```
 
-Required variables:
-```bash
-# GitHub (recommend creating a dedicated account for experiments)
-# Create token at: https://github.com/settings/tokens
-GITHUB_USER="your_username"
-GITHUB_TOKEN="your_github_token"
+After this process is complete, we will use the `code` file in the project root directory as the compilation result.
 
-# ACMOJ (https://acm.sjtu.edu.cn/OnlineJudge)
-# Create API token at: https://acm.sjtu.edu.cn/OnlineJudge/settings/api
-# For registration, use student ID: 123456123456
-ACMOJ_TOKEN="your_acmoj_token"
+The project does not provide a CMakeLists.txt file, so you need to create and edit it yourself. The local environment has gcc-13 and g++-13 available.
 
-# Agent-specific (configure as needed)
-GEMINI_API_KEY="your_gemini_key"
-CURSOR_API_KEY="your_cursor_key"
-ANTHROPIC_AUTH_TOKEN="your_anthropic_token"
-OPENAI_API_KEY="your_openai_key"
-AUGMENT_SESSION_AUTH="your_augment_auth"
+### Git Configuration Requirements
+
+**IMPORTANT**: You must create a `.gitignore` file in your project root directory to avoid OJ evaluation conflicts.
+
+The `.gitignore` file should include at least the following entries:
+
+```gitignore
+CMakeFiles/
+CMakeCache.txt
 ```
 
-Optional variables (for custom API endpoints):
-```bash
-# Custom Base URLs (useful for proxies or self-hosted services)
-OPENAI_BASE_URL="https://api.openai.com/v1"          # OpenAI API base URL
-ANTHROPIC_BASE_URL="https://api.anthropic.com"       # Anthropic API base URL
-GOOGLE_GEMINI_BASE_URL=""                            # Gemini API base URL
+### Submission Guidelines
 
-# Codex CLI (default: OpenAI official https://api.openai.com/v1)
-# For OpenRouter: CODEX_BASE_URL="https://openrouter.ai/api/v1"
-CODEX_API_KEY="your_codex_api_key"                   # Codex API key
-CODEX_BASE_URL=""                                    # Default: OpenAI official
+- The submitted code must be able to compile successfully through the above compilation process
+- The compiled executable file name must be `code`
+- The program needs to be able to read data from standard input and write results to standard output
+- Please ensure the code runs correctly within the given time and space limits
+- **You must use C++ or C language** to implement this assignment
 
-# Proxy Configuration (if needed)
-# https_proxy="http://host.docker.internal:7890"
-# http_proxy="http://host.docker.internal:7890"
-```
+### Evaluation Notes
 
-3. **Build Docker images**
-```bash
-# Build base image
-cd docker/base && docker build -t projdevbench-base:latest .
+- The program output must exactly match the expected output (including format)
+- Exceeding time or memory limits will be judged as the corresponding error type
+- Please pay attention to the overall time performance of your code and the time complexity of each part of your algorithm.
 
-# Build runner image (from project root)
-cd ../..
-docker build -t projdevbench-runner:latest -f docker/agent-runner/Dockerfile .
-```
+### Academic Integrity
 
-## Supported Agents
-
-| Agent | Description | Required Config |
-|-------|-------------|-----------------|
-| **gemini-cli** | Google Gemini CLI | `GEMINI_API_KEY` |
-| **cursor** | Cursor AI Editor | `CURSOR_API_KEY` |
-| **claude-code** | Anthropic Claude Code | `ANTHROPIC_AUTH_TOKEN` |
-| **codex** | OpenAI Codex CLI | `OPENAI_API_KEY` |
-| **augment** | Augment Code | `AUGMENT_SESSION_AUTH` |
-| **copilot** | GitHub Copilot CLI | GitHub OAuth |
-
-> **Copilot Note:** To run the Copilot agent, your `GITHUB_TOKEN` must have Copilot permissions enabled. Ensure your GitHub account has an active Copilot subscription and the token is authorized to access Copilot.
-
-## Usage
-
-### Run Evaluation
-
-```bash
-# Interactive mode - select agent, model, and problems interactively
-./scripts/run_all_problem.sh
-
-# With environment variables
-AGENT=cursor MODEL=gemini-3-pro ./scripts/run_all_problem.sh
-
-# Specify problems to run
-PROBLEMS="001,002,003" AGENT=claude-code MODEL=sonnet-4.5 ./scripts/run_all_problem.sh
-```
-
-### Parallel Execution
-
-Run multiple evaluations concurrently using the `CONCURRENCY` environment variable:
-
-```bash
-# Run 4 problems in parallel
-AGENT=cursor MODEL=auto CONCURRENCY=4 ./scripts/run_all_problem.sh
-
-# Run specific problems in parallel, skip existing logs
-PROBLEMS="001,002,003,004,005" AGENT=codex MODEL=gpt-5 CONCURRENCY=4 SKIP_EXISTING=true ./scripts/run_all_problem.sh
-
-# Force re-run all problems in parallel
-AGENT=cursor MODEL=auto CONCURRENCY=4 FORCE=true ./scripts/run_all_problem.sh
-```
-
-**Environment Variables:**
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `AGENT` | Agent type (cursor, claude-code, codex, etc.) | - |
-| `MODEL` | Model name (auto, gpt-5, sonnet-4.5, etc.) | - |
-| `PROBLEMS` | Comma-separated problem IDs (e.g., "001,002,003") | All problems |
-| `CONCURRENCY` | Number of parallel jobs | 1 (sequential) |
-| `SKIP_EXISTING` | Skip problems with existing logs | false |
-| `FORCE` | Force re-run problems with existing logs | false |
-
-## Evaluation Protocol
-
-### Execution-based Evaluation
-- Submissions are evaluated on an Online Judge platform
-- Test cases verify functional correctness, edge-case handling, and resource limits
-- Fine-grained diagnostic feedback: Compile Error, Runtime Error, Wrong Answer, TLE, MLE, Memory Leak
-
-### Code Review
-- Rule-based Python scripts for explicit constraint violations
-- LLM-based review for specification compliance
-- Detects forbidden library usage, hack solutions, and rule violations
-
-### Final Scoring
-```
-Final Score = 0.8 × Execution Score + 0.2 × Code Review Score
-```
-
-## Key Findings
-
-From our evaluation of 6 coding agents across multiple LLM backends:
-
-| Submission Status | Percentage |
-|-------------------|------------|
-| Accepted | 27.38% |
-| Wrong Answer | 41.86% |
-| Time Limit Exceeded | 13.91% |
-| Runtime Error | 7.01% |
-| Compile Error | 4.52% |
-| Memory Leak | 3.51% |
-| Memory Limit Exceeded | 1.36% |
-
-**Top Performing Configurations**:
-- Codex + GPT-5: 77.85% final score
-- Cursor + Gemini-3-Pro-Preview: 75.32% final score
-- Augment + GPT-5: 72.35% final score
-
-## Result Analysis
-
-### Execution Score Analysis
-
-Run the following script to analyze OJ execution results and calculate scores:
-
-```bash
-# Run from project root
-python3 scripts/analyze/analyze_exec_score.py
-```
-
-This script will:
-1. Scan the `logs/` directory and extract all submission records
-2. Call ACMOJ API to get detailed information for each submission (status, score, etc.)
-3. Filter out submissions exceeding `max_submissions` limit defined in `problem_registry.json`
-4. Calculate final score using weighted formula: `final_score = Σ(score/full_score × weight) / total_weight × 100`
-5. Save results to the `results/` directory
-
-**Output Files:**
-```
-results/
-├── exec_results.json          # Raw submission data
-├── exec_results.csv           # Raw submission data (CSV)
-├── exec_score_analysis.json   # Score analysis (weighted calculation)
-├── exec_score_analysis.csv    # Score matrix
-└── exec_score_summary.txt     # Human-readable summary
-```
-
-**Notes:**
-- Requires `ACMOJ_TOKEN` configured in `config/environment.env`
-- Submissions with `abort` status are not counted towards submission limit
-- Submissions exceeding `max_submissions` limit are excluded from scoring
-
-### Code Review Score Analysis
-
-Run the following script to analyze Code Review results:
-
-```bash
-# Run from project root
-python3 scripts/analyze/analyze_cr_score.py
-
-# Specify CR result directory
-python3 scripts/analyze/analyze_cr_score.py --cr-result-root /path/to/cr_result
-```
-
-This script will:
-1. Scan the `cr_result/` directory and read all `all_result.json` files
-2. Aggregate CR scores for each agent+model combination
-3. Calculate statistics (average, min, max scores, etc.)
-4. Save results to the `results/` directory
-
-**Output Files:**
-```
-results/
-├── cr_score_analysis.json    # CR score analysis
-├── cr_score_analysis.csv     # CR score matrix
-├── cr_score_detail.csv       # CR detailed data (with commit count, etc.)
-└── cr_score_summary.txt      # Human-readable summary
-```
-
-### Combined Score Analysis
-
-Run the following script to calculate combined scores (Execution + CR):
-
-```bash
-# Run from project root (default: 0.8×Exec + 0.2×CR)
-python3 scripts/analyze/analyze_all_score.py
-
-# Custom weights
-python3 scripts/analyze/analyze_all_score.py --exec-weight 0.7 --cr-weight 0.3
-```
-
-This script will:
-1. Read `results/exec_score_analysis.json` (execution scores)
-2. Read `results/cr_score_analysis.json` (CR scores)
-3. Calculate combined score: `all_score = 0.8 × exec_score + 0.2 × cr_score`
-4. Save results to the `results/` directory
-
-**Output Files:**
-```
-results/
-├── all_score_analysis.json   # Combined score analysis
-├── all_score_analysis.csv    # Combined score matrix
-├── all_score_detail.csv      # Detailed data (exec, cr, all scores)
-└── all_score_summary.txt     # Human-readable summary
-```
-
-**Notes:**
-- Requires running `analyze_exec_score.py` and `analyze_cr_score.py` first to generate input data
-- If a problem only has execution score or only has CR score, it will be calculated based on the available score
-
-## Adding New Agents
-
-1. Create agent script in `scripts/container/run_new_agent.sh`
-2. Install CLI tools in `docker/base/Dockerfile`
-3. Add case branch in `scripts/run_evaluation.sh`
-4. Update `config/agent_model_config.json`
-
-## Logs
-
-Logs are saved to `logs/[agent]/[model]/[problem_id]/`:
-```
-oj_eval_[agent]_[model]_[problem_id]_[timestamp].log
-```
-
-Contains:
-- Environment configuration
-- GitHub repository creation
-- Agent execution trace
-- OJ submission results
-- Submission IDs
-
-## License
-
-MIT License
-
-## Citation
-
-If you use ProjDevBench in your research, please cite:
-
-```bibtex
-@misc{lu2026projdevbenchbenchmarkingaicoding,
-      title={ProjDevBench: Benchmarking AI Coding Agents on End-to-End Project Development}, 
-      author={Pengrui Lu and Shiqi Zhang and Yunzhong Hou and Lyumanshan Ye and Chaoyi Huang and Zixi Chen and Ji Zeng and Hantao Jiang and Pengfei Liu and Yiwei Wang and Ming-Hsuan Yang},
-      year={2026},
-      eprint={2602.01655},
-      archivePrefix={arXiv},
-      primaryClass={cs.AI},
-      url={https://arxiv.org/abs/2602.01655}, 
-}
-```
-
-## Acknowledgments
-
-We thank the OJ platform for providing the evaluation infrastructure and the developers of the coding agents evaluated in this work.
+If any violations are found during evaluation or code review (including but not limited to using unconventional methods to pass test cases), your final score may be significantly reduced or become **0 points**.
