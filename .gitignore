@@ -113,7 +113,6 @@ yarn-error.log
 CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake
-Makefile
 
 # ============================================
 # LaTeX auxiliary files
